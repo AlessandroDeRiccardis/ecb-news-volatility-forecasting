@@ -1,4 +1,4 @@
-# ECB News Volatility Forecasting
+# ECB news volatility forecasting
 
 [![CI](https://github.com/AlessandroDeRiccardis/ecb-news-volatility-forecasting/actions/workflows/ci.yml/badge.svg)](https://github.com/AlessandroDeRiccardis/ecb-news-volatility-forecasting/actions/workflows/ci.yml)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-3776AB.svg)](https://www.python.org/)
@@ -10,13 +10,13 @@ power beyond asymmetric GARCH benchmarks.**
 
 ![Daily ECB stance](reports/figures/figure_2_stance_series.png)
 
-## Research Question
+## Research question
 
 Does hawkish or dovish European Central Bank communication improve
 out-of-sample Euro Stoxx 50 volatility forecasts beyond standard GARCH-family
 models?
 
-## Why This Matters For Quantitative Finance
+## Why this matters for quantitative finance
 
 Central-bank communication clearly moves markets, but market impact does not
 automatically imply incremental forecast value. This study tests the stronger
@@ -25,7 +25,7 @@ conditioning on persistent and asymmetric return dynamics. The design places a
 transformer-derived macro signal inside a disciplined OOS comparison rather
 than treating text classification accuracy as an economic result.
 
-## Data Overview
+## Data overview
 
 The empirical sample contains 4,201 Euro Stoxx 50 trading days from April 2007
 through December 2023:
@@ -56,7 +56,7 @@ Sentence-level hawkish, dovish, and neutral probabilities are aggregated using:
 
 The main specification uses a `0.50` classifier-confidence threshold.
 
-## Model Specifications
+## Model specifications
 
 The benchmark suite contains GARCH(1,1), GJR-GARCH(1,1), and EGARCH(1,1).
 News-augmented variants multiply the GARCH recursion by a nonlinear stance
@@ -78,7 +78,7 @@ The code uses `B2.1` and `B2.2`; the paper calls the same models `NA1.1` and
 | `B2.1` | `NA1.1` | NA-GARCH with net stance |
 | `B2.2` | `NA1.2` | NA-GARCH with separate dovish/hawkish inputs |
 
-## Forecasting Design
+## Forecasting design
 
 Models are re-estimated at weekly forecast origins over 2019-2023. The study
 evaluates rolling and increasing estimation windows at one- and five-day
@@ -86,7 +86,7 @@ horizons. Multi-step NA-GARCH forecasts hold the latest observable stance
 constant, matching the persistence rule. Training windows never contain data
 after the forecast origin.
 
-## Evaluation Metrics
+## Evaluation metrics
 
 - Patton QLIKE, the primary loss because it is robust to noisy variance proxies;
 - RMSE, reported as a secondary metric;
@@ -95,7 +95,7 @@ after the forecast origin.
 - forecast combinations of GJR and NA-GARCH-asym;
 - regime sub-samples and robustness variants.
 
-## Main Empirical Result
+## Main empirical result
 
 ECB stance does **not** improve OOS volatility forecasts relative to asymmetric
 GARCH benchmarks. This is an informative empirical null result.
@@ -110,14 +110,14 @@ GARCH benchmarks. This is an informative empirical null result.
 
 ![Out-of-sample forecasts](reports/figures/figure_4_oos_forecasts.png)
 
-## Robustness Checks
+## Robustness checks
 
 The null survives alternative communication sources, classifier thresholds,
 Gaussian versus Student-t innovations, absolute returns as the volatility
 proxy, sub-sample evaluation, MPS surprise construction, and Bernoth-style
 residualized stance surprises.
 
-## Repository Structure
+## Repository structure
 
 ```text
 .
@@ -155,7 +155,7 @@ conda env create -f environment.yml
 conda activate ecb-vol-forecasting
 ```
 
-## How To Reproduce Results
+## How to reproduce results
 
 Validate the tracked processed snapshot and estimate the main models:
 
