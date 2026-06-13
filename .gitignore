@@ -1,0 +1,38 @@
+.DS_Store
+.idea/
+.vscode/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+build/
+dist/
+
+# Raw text, licensed/large inputs, and generated intermediate data.
+data/raw/**
+data/interim/**
+data/external/**
+!data/raw/.gitkeep
+!data/interim/.gitkeep
+!data/external/.gitkeep
+
+# Expensive regenerated forecast paths and logs.
+reports/forecasts/
+reports/tables/in_sample_model_comparison.csv
+reports/tables/descriptive_statistics.csv
+reports/tables/oos_accuracy.csv
+reports/tables/oos_dm_tests.csv
+reports/tables/oos_mcs.csv
+reports/tables/forecast_combination.csv
+reports/figures/returns_and_realized_volatility.png
+reports/figures/daily_stance_series.png
+*.log
+
+# Legacy scripts write these when explicitly invoked.
+market_data/
+output/

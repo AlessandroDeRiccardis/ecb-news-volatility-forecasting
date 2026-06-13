@@ -1,0 +1,13 @@
+arch>=7.2,<9
+beautifulsoup4>=4.12,<5
+matplotlib>=3.9,<4
+numba>=0.61,<0.63
+numpy>=2.0,<3
+pandas>=2.2,<3
+pypdf>=5,<7
+requests>=2.32,<3
+scipy>=1.14,<2
+torch>=2.5,<3
+tqdm>=4.67,<5
+transformers>=4.47,<5
+yfinance>=0.2.50,<2

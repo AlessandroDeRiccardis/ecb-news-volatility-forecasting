@@ -1,0 +1,5 @@
+robustness,scheme,horizon,n_obs,QLIKE,RMSE
+"B5.1 abs_return target, vol scale (reuses B2.2 forecasts)",RW,1,252,-3.6695162313012397,0.010422216336413433
+"B5.1 abs_return target, vol scale (reuses B2.2 forecasts)",RW,5,252,-2.0540950006495935,0.030312607332347537
+"B5.1 abs_return target, vol scale (reuses B2.2 forecasts)",IW,1,252,-3.6642798925542146,0.01052207930926182
+"B5.1 abs_return target, vol scale (reuses B2.2 forecasts)",IW,5,252,-2.065448033204649,0.02998446689494831

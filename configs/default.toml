@@ -1,0 +1,14 @@
+[research]
+presample_start = "2007-04-02"
+insample_start = "2008-01-01"
+insample_end = "2018-12-31"
+outsample_end = "2023-12-31"
+
+[forecasting]
+step = 5
+horizons = [1, 5]
+schemes = ["RW", "IW"]
+distribution = "studentst"
+
+[runtime]
+random_seed = 42

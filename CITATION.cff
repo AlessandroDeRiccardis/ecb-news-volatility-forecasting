@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+title: "ECB News Volatility Forecasting"
+message: "Please cite this repository and the accompanying paper."
+type: software
+version: 0.1.0
+date-released: 2026-06-13
+authors:
+  - family-names: De Riccardis
+    given-names: Alessandro
+  - family-names: Micheln
+    given-names: Marie-felice
+  - family-names: Pietrangelo
+    given-names: Ludovica
+  - family-names: De Martino
+    given-names: Carlotta
+preferred-citation:
+  type: article
+  title: "Volatility forecasting with ECB news stance: An empirical investigation of stance-augmented GARCH models"
+  year: 2026
+  authors:
+    - family-names: De Riccardis
+      given-names: Alessandro
+    - family-names: Micheln
+      given-names: Marie-felice
+    - family-names: Pietrangelo
+      given-names: Ludovica
+    - family-names: De Martino
+      given-names: Carlotta

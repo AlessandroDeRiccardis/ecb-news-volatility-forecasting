@@ -1,0 +1,259 @@
+==============================================================================
+FINAL RESULTS — VOLATILITY FORECASTING WITH ECB NEWS SENTIMENT
+==============================================================================
+
+Pipeline configuration
+------------------------------------------------------------------------------
+  In-sample window:  2008-01-01 → 2018-12-31
+  Out-of-sample:     2019-01-01 → 2023-12-31
+  Innovations:       Student-t (default)
+  Vol proxy (main):  squared log return
+  News scoring:      FOMC-RoBERTa stance, sentence-level, τ=0.50, persist-to-next-event smoothing, Sadik in-sample-max rescaling
+
+Table 1A — In-sample MLE, main suite
+------------------------------------------------------------------------------
+model      dist  n_obs   loglik        aic  n_params  fit_time
+ B1.1 studentst   2754 8193.027 -16378.055         4     0.051
+ B1.2 studentst   2754 8253.447 -16496.894         5     0.059
+ B1.3 studentst   2754 8270.714 -16531.429         5     0.046
+NA1.1 studentst   2754 8193.162 -16372.325         7     6.351
+NA1.2 studentst   2754 8194.981 -16373.963         8    10.302
+
+Table 1B — In-sample MLE, robustness suite
+------------------------------------------------------------------------------
+                model      dist  n_obs   loglik        aic  n_params  fit_time
+                 R1.2 studentst   2749 8179.597 -16343.194         8     5.409
+                 R1.3 studentst   2752 8188.969 -16361.938         8     6.074
+                 R1.4 studentst   2754 8193.165 -16370.330         8     4.254
+                 R1.5 studentst   2754 8195.214 -16374.428         8     4.949
+                 R1.6 studentst   2754 8195.286 -16374.573         8     6.316
+R1.7 (NA1.2 Gaussian)    normal   2754 8140.240 -16266.479         7       NaN
+
+Table 1C — Ljung-Box residual diagnostics (main suite)
+  H0 of no autocorrelation; small p indicates remaining structure.
+------------------------------------------------------------------------------
+model  lag  Q_resid  p_resid  Q_resid_sq  p_resid_sq
+ B1.1    5    8.541    0.129       3.741       0.587
+ B1.1   10   11.813    0.298       6.483       0.773
+ B1.1   20   18.053    0.584      17.126       0.645
+ B1.2    5    8.232    0.144       6.891       0.229
+ B1.2   10   12.268    0.268       9.005       0.532
+ B1.2   20   18.510    0.554      18.443       0.558
+ B1.3    5    8.481    0.132       2.992       0.701
+ B1.3   10   12.741    0.239       4.083       0.944
+ B1.3   20   19.289    0.503      13.987       0.831
+NA1.1    5    8.317    0.140       4.130       0.531
+NA1.1   10   11.592    0.313       6.822       0.742
+NA1.1   20   17.655    0.610      17.389       0.628
+NA1.2    5    8.842    0.116       4.148       0.528
+NA1.2   10   12.076    0.280       7.185       0.708
+NA1.2   20   18.323    0.566      17.705       0.607
+
+Table 2 — OOS QLIKE / RMSE
+------------------------------------------------------------------------------
+model scheme  horizon  n_obs     QLIKE     RMSE
+ B1.1     RW        1    252 -7.655407 0.000608
+ B1.1     RW        5    252 -6.309600 0.001795
+ B1.1     IW        1    252 -7.660882 0.000609
+ B1.1     IW        5    252 -6.307195 0.001808
+ B1.2     RW        1    252 -7.757590 0.000631
+ B1.2     RW        5    252 -6.366672 0.002023
+ B1.2     IW        1    252 -7.758057 0.000629
+ B1.2     IW        5    252 -6.365324 0.002014
+ B1.3     RW        1    252 -7.767212 0.000586
+ B1.3     RW        5    252 -6.374986 0.001637
+ B1.3     IW        1    252 -7.773423 0.000587
+ B1.3     IW        5    252 -6.375359 0.001646
+NA1.1     RW        1    252 -7.655386 0.000608
+NA1.1     RW        5    252 -6.309971 0.001794
+NA1.1     IW        1    252 -7.661243 0.000609
+NA1.1     IW        5    252 -6.307177 0.001808
+NA1.2     RW        1    252 -7.640813 0.000609
+NA1.2     RW        5    252 -6.297866 0.001808
+NA1.2     IW        1    252 -7.638410 0.000610
+NA1.2     IW        5    252 -6.292153 0.001819
+ R1.2     RW        1    252 -7.654182 0.000608
+ R1.2     RW        5    252 -6.308253 0.001794
+ R1.3     RW        1    252 -7.638561 0.000610
+ R1.3     RW        5    252 -6.305124 0.001800
+ R1.4     RW        1    252 -7.655481 0.000608
+ R1.4     RW        5    252 -6.309786 0.001794
+
+Table 3 — Diebold-Mariano tests (vs B1.1 GARCH and vs B1.2 GJR)
+  mean_diff_QL = QLIKE(model) − QLIKE(baseline); negative = model better.
+------------------------------------------------------------------------------
+model vs_baseline scheme  horizon  mean_diff_QL  DM_stat  p_value          interp
+ B1.2        B1.1     RW        1       -0.1022  -2.1310   0.0331    model better
+ B1.2        B1.1     RW        5       -0.0571  -2.0294   0.0424    model better
+ B1.2        B1.1     IW        1       -0.0972  -2.0953   0.0361    model better
+ B1.2        B1.1     IW        5       -0.0581  -2.2349   0.0254    model better
+ B1.3        B1.1     RW        1       -0.1118  -1.7216   0.0851        no diff.
+ B1.3        B1.1     RW        5       -0.0654  -1.9530   0.0508        no diff.
+ B1.3        B1.1     IW        1       -0.1125  -1.8142   0.0696        no diff.
+ B1.3        B1.1     IW        5       -0.0682  -2.2037   0.0275    model better
+NA1.1        B1.1     RW        1        0.0000   0.0583   0.9535        no diff.
+NA1.1        B1.1     RW        5       -0.0004  -1.6114   0.1071        no diff.
+NA1.1        B1.1     IW        1       -0.0004  -1.3717   0.1702        no diff.
+NA1.1        B1.1     IW        5        0.0000   0.0987   0.9214        no diff.
+NA1.2        B1.1     RW        1        0.0146   1.2333   0.2175        no diff.
+NA1.2        B1.1     RW        5        0.0117   1.5242   0.1275        no diff.
+NA1.2        B1.1     IW        1        0.0225   1.6233   0.1045        no diff.
+NA1.2        B1.1     IW        5        0.0150   1.3987   0.1619        no diff.
+ R1.2        B1.1     RW        1        0.0012   0.8885   0.3743        no diff.
+ R1.2        B1.1     RW        5        0.0013   1.9164   0.0553        no diff.
+ R1.3        B1.1     RW        1        0.0168   1.2309   0.2184        no diff.
+ R1.3        B1.1     RW        5        0.0045   0.6177   0.5367        no diff.
+ R1.4        B1.1     RW        1       -0.0001  -0.2153   0.8295        no diff.
+ R1.4        B1.1     RW        5       -0.0002  -1.0001   0.3173        no diff.
+ B1.1        B1.2     RW        1        0.1022   2.1310   0.0331 baseline better
+ B1.1        B1.2     RW        5        0.0571   2.0294   0.0424 baseline better
+ B1.1        B1.2     IW        1        0.0972   2.0953   0.0361 baseline better
+ B1.1        B1.2     IW        5        0.0581   2.2349   0.0254 baseline better
+ B1.3        B1.2     RW        1       -0.0096  -0.2559   0.7980        no diff.
+ B1.3        B1.2     RW        5       -0.0083  -0.6893   0.4907        no diff.
+ B1.3        B1.2     IW        1       -0.0154  -0.4417   0.6587        no diff.
+ B1.3        B1.2     IW        5       -0.0100  -0.9035   0.3662        no diff.
+NA1.1        B1.2     RW        1        0.1022   2.1349   0.0328 baseline better
+NA1.1        B1.2     RW        5        0.0567   2.0219   0.0432 baseline better
+NA1.1        B1.2     IW        1        0.0968   2.0936   0.0363 baseline better
+NA1.1        B1.2     IW        5        0.0581   2.2453   0.0247 baseline better
+NA1.2        B1.2     RW        1        0.1168   2.2376   0.0252 baseline better
+NA1.2        B1.2     RW        5        0.0688   2.2121   0.0270 baseline better
+NA1.2        B1.2     IW        1        0.1196   2.3179   0.0205 baseline better
+NA1.2        B1.2     IW        5        0.0732   2.4714   0.0135 baseline better
+ R1.2        B1.2     RW        1        0.1034   2.1536   0.0313 baseline better
+ R1.2        B1.2     RW        5        0.0584   2.0724   0.0382 baseline better
+ R1.3        B1.2     RW        1        0.1190   2.3164   0.0205 baseline better
+ R1.3        B1.2     RW        5        0.0615   2.0696   0.0385 baseline better
+ R1.4        B1.2     RW        1        0.1021   2.1345   0.0328 baseline better
+ R1.4        B1.2     RW        5        0.0569   2.0265   0.0427 baseline better
+
+Table 4 — Model Confidence Set at 90%
+------------------------------------------------------------------------------
+scheme  horizon  n_obs     in_MCS                                 excl
+    RW        1    252 B1.2, B1.3 B1.1, NA1.1, NA1.2, R1.2, R1.3, R1.4
+    RW        5    252 B1.2, B1.3 B1.1, NA1.1, NA1.2, R1.2, R1.3, R1.4
+    IW        1    252 B1.2, B1.3                   B1.1, NA1.1, NA1.2
+    IW        5    252 B1.2, B1.3                   B1.1, NA1.1, NA1.2
+
+Table 5 — Sub-sample OOS analysis
+  Sub-windows: 2019_normal, 2020_2021_covid, 2022_2023_infl
+------------------------------------------------------------------------------
+      subsample model scheme  horizon  n_obs     QLIKE     RMSE
+    2019_normal  B1.1     RW        1     50 -8.563008 0.000135
+    2019_normal  B1.1     RW        5     50 -6.963523 0.000354
+    2019_normal  B1.1     IW        1     50 -8.567284 0.000135
+    2019_normal  B1.1     IW        5     50 -6.961467 0.000356
+    2019_normal  B1.2     RW        1     50 -8.688055 0.000132
+    2019_normal  B1.2     RW        5     50 -7.027015 0.000359
+    2019_normal  B1.2     IW        1     50 -8.687987 0.000132
+    2019_normal  B1.2     IW        5     50 -7.027448 0.000360
+    2019_normal  B1.3     RW        1     50 -8.658143 0.000135
+    2019_normal  B1.3     RW        5     50 -7.028872 0.000352
+    2019_normal  B1.3     IW        1     50 -8.666956 0.000135
+    2019_normal  B1.3     IW        5     50 -7.031872 0.000354
+    2019_normal NA1.1     RW        1     50 -8.563694 0.000135
+    2019_normal NA1.1     RW        5     50 -6.964231 0.000354
+    2019_normal NA1.1     IW        1     50 -8.567290 0.000135
+    2019_normal NA1.1     IW        5     50 -6.961166 0.000356
+    2019_normal NA1.2     RW        1     50 -8.582154 0.000135
+    2019_normal NA1.2     RW        5     50 -6.972958 0.000350
+    2019_normal NA1.2     IW        1     50 -8.583772 0.000135
+    2019_normal NA1.2     IW        5     50 -6.968127 0.000352
+    2019_normal  R1.2     RW        1     50 -8.556495 0.000136
+    2019_normal  R1.2     RW        5     50 -6.958780 0.000356
+    2019_normal  R1.3     RW        1     50 -8.580699 0.000134
+    2019_normal  R1.3     RW        5     50 -6.967946 0.000345
+    2019_normal  R1.4     RW        1     50 -8.562914 0.000135
+    2019_normal  R1.4     RW        5     50 -6.963750 0.000354
+2020_2021_covid  B1.1     RW        1    101 -6.974613 0.000909
+2020_2021_covid  B1.1     RW        5    101 -5.989568 0.002691
+2020_2021_covid  B1.1     IW        1    101 -6.990853 0.000910
+2020_2021_covid  B1.1     IW        5    101 -5.986956 0.002708
+2020_2021_covid  B1.2     RW        1    101 -7.063495 0.000946
+2020_2021_covid  B1.2     RW        5    101 -6.084894 0.003087
+2020_2021_covid  B1.2     IW        1    101 -7.065835 0.000943
+2020_2021_covid  B1.2     IW        5    101 -6.083010 0.003071
+2020_2021_covid  B1.3     RW        1    101 -7.049726 0.000875
+2020_2021_covid  B1.3     RW        5    101 -6.086017 0.002458
+2020_2021_covid  B1.3     IW        1    101 -7.064582 0.000876
+2020_2021_covid  B1.3     IW        5    101 -6.092534 0.002467
+2020_2021_covid NA1.1     RW        1    101 -6.974797 0.000909
+2020_2021_covid NA1.1     RW        5    101 -5.990313 0.002689
+2020_2021_covid NA1.1     IW        1    101 -6.991836 0.000910
+2020_2021_covid NA1.1     IW        5    101 -5.987275 0.002709
+2020_2021_covid NA1.2     RW        1    101 -6.933924 0.000909
+2020_2021_covid NA1.2     RW        5    101 -5.966895 0.002700
+2020_2021_covid NA1.2     IW        1    101 -6.936759 0.000909
+2020_2021_covid NA1.2     IW        5    101 -5.969361 0.002704
+2020_2021_covid  R1.2     RW        1    101 -6.975650 0.000909
+2020_2021_covid  R1.2     RW        5    101 -5.988914 0.002689
+2020_2021_covid  R1.3     RW        1    101 -6.931613 0.000910
+2020_2021_covid  R1.3     RW        5    101 -5.978091 0.002688
+2020_2021_covid  R1.4     RW        1    101 -6.975003 0.000909
+2020_2021_covid  R1.4     RW        5    101 -5.989999 0.002689
+ 2022_2023_infl  B1.1     RW        1    101 -7.886893 0.000296
+ 2022_2023_infl  B1.1     RW        5    101 -6.305906 0.000859
+ 2022_2023_infl  B1.1     IW        1    101 -7.882198 0.000296
+ 2022_2023_infl  B1.1     IW        5    101 -6.303537 0.000871
+ 2022_2023_infl  B1.2     RW        1    101 -7.991058 0.000300
+ 2022_2023_infl  B1.2     RW        5    101 -6.321547 0.000786
+ 2022_2023_infl  B1.2     IW        1    101 -7.989917 0.000300
+ 2022_2023_infl  B1.2     IW        5    101 -6.319855 0.000792
+ 2022_2023_infl  B1.3     RW        1    101 -8.043643 0.000288
+ 2022_2023_infl  B1.3     RW        5    101 -6.340249 0.000767
+ 2022_2023_infl  B1.3     IW        1    101 -8.039920 0.000291
+ 2022_2023_infl  B1.3     IW        5    101 -6.333178 0.000782
+ 2022_2023_infl NA1.1     RW        1    101 -7.886319 0.000296
+ 2022_2023_infl NA1.1     RW        5    101 -6.305738 0.000860
+ 2022_2023_infl NA1.1     IW        1    101 -7.882113 0.000296
+ 2022_2023_infl NA1.1     IW        5    101 -6.303323 0.000872
+ 2022_2023_infl NA1.2     RW        1    101 -7.881690 0.000301
+ 2022_2023_infl NA1.2     RW        5    101 -6.294634 0.000896
+ 2022_2023_infl NA1.2     IW        1    101 -7.872060 0.000304
+ 2022_2023_infl NA1.2     IW        5    101 -6.280303 0.000939
+ 2022_2023_infl  R1.2     RW        1    101 -7.886025 0.000296
+ 2022_2023_infl  R1.2     RW        5    101 -6.305550 0.000860
+ 2022_2023_infl  R1.3     RW        1    101 -7.879104 0.000303
+ 2022_2023_infl  R1.3     RW        5    101 -6.304027 0.000895
+ 2022_2023_infl  R1.4     RW        1    101 -7.886736 0.000296
+ 2022_2023_infl  R1.4     RW        5    101 -6.305829 0.000860
+
+Table 6 — Robustness: |return| target (R1.1, reuses NA1.2 forecasts)
+------------------------------------------------------------------------------
+                                                robustness scheme  horizon  n_obs     QLIKE     RMSE
+R1.1 abs_return target, vol scale (reuses NA1.2 forecasts)     RW        1    252 -3.669516 0.010422
+R1.1 abs_return target, vol scale (reuses NA1.2 forecasts)     RW        5    252 -2.054095 0.030313
+R1.1 abs_return target, vol scale (reuses NA1.2 forecasts)     IW        1    252 -3.664280 0.010522
+R1.1 abs_return target, vol scale (reuses NA1.2 forecasts)     IW        5    252 -2.065448 0.029984
+
+Table 7 — Forecast combination: (1−w) · B1.2 + w · NA1.2
+  best_w near 0 ⇒ NA1.2 carries no orthogonal information vs GJR.
+------------------------------------------------------------------------------
+scheme  horizon model_a model_b  n_obs  QLIKE_a_alone  best_w  QLIKE_combined  Δ_QLIKE
+    RW        1    B1.2   NA1.2    252      -7.757590     0.0       -7.757590      0.0
+    RW        5    B1.2   NA1.2    252      -6.366672     0.0       -6.366672      0.0
+    IW        1    B1.2   NA1.2    252      -7.758057     0.0       -7.758057      0.0
+    IW        5    B1.2   NA1.2    252      -6.365324     0.0       -6.365324      0.0
+
+Table 8 — Economic significance of news scaling under NA1.2
+------------------------------------------------------------------------------
+  f(P=0, N=0)              = +0.982917
+  f(P=1, N=0) max-dov      = +0.984900
+  f(P=0, N=-1) max-haw     = +1.024740
+  f(P=1, N=-1) max-mix     = +1.026723
+  max                      = +1.026723
+  min                      = +0.982917
+  range_pct_baseline       = +4.46%
+
+Appendix — Alternative input constructions (in-sample only)
+  All underperform raw levels (NA1.2). Reported for completeness.
+------------------------------------------------------------------------------
+model      dist  n_obs   loglik        aic  n_params  fit_time                                            description  delta_ll_vs_b22  loglik_b22_same_n  aic_b22_same_n  delta_aic_vs_b22
+ R1.8 studentst   2754 8195.217 -16374.434       8.0     6.496 MPS surprise vs intra-period baseline, 5-day exp decay           -0.072                NaN             NaN               NaN
+ R1.9 studentst   2752 8188.226 -16360.452       NaN       NaN                     Bernoth surprises, with AR(2) lags           -1.449           8189.675      -16363.350             2.898
+R1.10 studentst   2754 8193.653 -16371.306       NaN       NaN                          Bernoth surprises, no AR lags           -1.636           8195.289      -16374.578             3.271
+
+==============================================================================
+END
+==============================================================================
